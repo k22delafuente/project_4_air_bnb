@@ -17,6 +17,7 @@ def predict():
     df = pd.DataFrame([data])
     df = pd.get_dummies(df)
 
+    # Add missing dummy columns
     for col in columns:
         if col not in df:
             df[col] = 0

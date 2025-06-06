@@ -36,7 +36,8 @@ document.getElementById("predictForm").addEventListener("submit", async e => {
         minimum_nights: +document.getElementById("minimum_nights").value,
         number_of_reviews: +document.getElementById("number_of_reviews").value,
         reviews_per_month: +document.getElementById("reviews_per_month").value,
-        room_type: document.getElementById("room_type").value
+        room_type: document.getElementById("room_type").value,
+        availability_365: +document.getElementById("availability_365").value
     };
 
     const res = await fetch("/predict", {
@@ -44,6 +45,7 @@ document.getElementById("predictForm").addEventListener("submit", async e => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
     });
+
     const result = await res.json();
     const div = document.getElementById("predictionResult");
     div.classList.remove("d-none");
