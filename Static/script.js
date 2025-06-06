@@ -1,14 +1,18 @@
-// Load Plotly visualizations
-fetch("/price_dist.json")
-    .then(res => res.json())
-    .then(fig => Plotly.newPlot("priceDist", fig.data, fig.layout));
+// Load Plotly JSON charts
+function loadChart(endpoint, containerId) {
+    fetch(endpoint)
+        .then(res => res.json())
+        .then(fig => Plotly.newPlot(containerId, fig.data, fig.layout));
+}
 
-fetch("/feature_importance.json")
-    .then(res => res.json())
-    .then(fig => Plotly.newPlot("featureImportance", fig.data, fig.layout));
+loadChart("/price_dist.json", "priceDist");
+loadChart("/room_type_distribution.json", "roomTypeDist");
+loadChart("/avg_price_by_neighbourhood.json", "avgPriceNeighborhood");
+loadChart("/reviews_vs_price.json", "reviewsVsPrice");
+loadChart("/availability_heatmap.json", "availabilityHeatmap");
 
 // Leaflet Map
-const map = L.map("map").setView([36.1699, -115.1398], 11); // Las Vegas coords
+const map = L.map("map").setView([36.1699, -115.1398], 11);
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
 
 fetch("/listings.geojson")
@@ -28,26 +32,3 @@ fetch("/listings.geojson")
             }
         }).addTo(map);
     });
-
-// Handle prediction form
-document.getElementById("predictForm").addEventListener("submit", async e => {
-    e.preventDefault();
-    const data = {
-        minimum_nights: +document.getElementById("minimum_nights").value,
-        number_of_reviews: +document.getElementById("number_of_reviews").value,
-        reviews_per_month: +document.getElementById("reviews_per_month").value,
-        room_type: document.getElementById("room_type").value,
-        availability_365: +document.getElementById("availability_365").value
-    };
-
-    const res = await fetch("/predict", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-    });
-
-    const result = await res.json();
-    const div = document.getElementById("predictionResult");
-    div.classList.remove("d-none");
-    div.innerHTML = `<strong>Estimated Nightly Price: $${result.predicted_price}</strong>`;
-});
