@@ -5,6 +5,7 @@ To predict whether a Las Vegas Airbnb listing is high-priced or low-priced using
 We built a binary classification model using Random Forest, evaluated different configurations, and achieved strong performance above 80% accuracy.
 
 The dataset used for this project was retrieved from: https://insideairbnb.com/get-the-data/
+
 Technologies Used:
 - Python (Pandas, NumPy, Matplotlib, Seaborn)
 - Scikit-learn
